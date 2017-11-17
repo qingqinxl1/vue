@@ -1,0 +1,117 @@
+<!Doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>vue 测试页面</title>
+  <style media="screen">
+    .mul_line {
+      white-space: pre-line;
+    }
+    /*.mrgt30{margin-top:30px}*/
+    /*.pdt30{padding-top:30px;}*/
+  </style>
+</head>
+
+<body>
+  <div id="app_2">
+    <ul>
+      <todo-item v-for="item in todos" v-bind:todo="item">
+      </todo-item>
+    </ul>
+    <p v-text="fullName" @click="showEvent">ninhaoninhao</p>
+    <button @click="warn('Form cannot be submitted yet.', $event)">
+        Submit
+    </button>
+    <span>多行文本展示：</span>
+    <p class="mul_line">{{ multiMessage }}</p><br>
+    <textarea placeholder="添加多行文本" v-model="multiMessage"></textarea>
+    <label for="checkbox">{{ checked }}</label>
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <br>
+    <select id="selectDiv" v-model="selected">
+      <option v-for="item in options" :value="item.value" v-text="item.name"></option>
+    </select>
+    <p>选中的城市：{{ selected.number }}</p>
+  </div>
+
+
+
+  <script src="vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+  <script>
+    Vue.component('todo-item', {
+      props: ['todo'],
+      template: '<li>{{todo.text}}</li>'
+    });
+
+    var app_2 = new Vue({
+      el: '#app_2',
+      data: {
+        todos: [{
+            text: '学习javascript'
+          },
+          {
+            text: '学习vue'
+          },
+          {
+            text: '整个牛项目'
+          }
+        ],
+        firstName: '黄',
+        lastName: '晓丽',
+        multiMessage: '',
+        checked: false,
+        selected: [],
+        options: [{
+            name: '选项A',
+            value: {
+              number: 1
+            }
+          },
+          {
+            name: '选项B',
+            value: {
+              number: 2
+            }
+          },
+          {
+            name: '选项C',
+            value: {
+              number: 3
+            }
+          }
+        ]
+      },
+      computed: {
+        fullName: {
+          get: function() {
+            return this.firstName + ' ' + this.lastName;
+          },
+          set: function(newName) {
+            var newNames = newName.split(' ');
+            this.firstName = newNames[0];
+            this.lastName = newNames[newNames.length - 1];
+          }
+        }
+      },
+      methods: {
+        showEvent: function(event) {
+          console.dir(event);
+        },
+        warn: function(message, event) {
+          console.dir(event);
+          // 现在我们可以访问原生事件对象
+          if (event) event.preventDefault()
+          alert(message);
+        }
+      }
+    });
+    app_2.todos.push({
+      text: '厉害了，我的姐'
+    });
+  </script>
+</body>
+
+</html>
